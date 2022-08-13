@@ -1,6 +1,6 @@
 import React from 'react';
 
-const BurgerBlock = ({title, price, image, steak, types}) => {
+const BurgerBlock = ({title, price, imageUrl, steak, types}) => {
     const [activeType, setActiveType] = React.useState(0);
     const [activeSteak, setActiveSteak] = React.useState(0);
 
@@ -10,17 +10,17 @@ const BurgerBlock = ({title, price, image, steak, types}) => {
         <div className="burger-block">
             <img
                 className="burger-block__image"
-                src={image}
+                src={imageUrl}
                 alt="burger"
             />
             <h4 className="burger-block__title">{title}</h4>
             <div className="burger-block__selector">
                 <ul>
-                    {types.map(type =>
+                    {types.map((type, index) =>
                         <li
-                            key={type}
-                            className={activeType === type ? 'active' : ''}
-                            onClick={() => setActiveType(type)}
+                            key={index}
+                            className={activeType === index ? 'active' : ''}
+                            onClick={() => setActiveType(index)}
                         >
                             {typeNames[type]}
                         </li>
