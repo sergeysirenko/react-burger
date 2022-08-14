@@ -8,8 +8,8 @@ const Header = () => {
                 <Link to="/">
                     <div className="header__logo">
                         <img width="54" src="/img/burger-logo.svg" alt="Burger logo"/>
-                        <div>
-                            <h1>Ukrainian Burger</h1>
+                        <div className="header__logo--info">
+                            <h1>Ukrainian Burgers</h1>
                             <p>the most delicious burgers in the World!</p>
                         </div>
                     </div>

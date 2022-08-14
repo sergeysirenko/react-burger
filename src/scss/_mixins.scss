@@ -1,0 +1,9 @@
+@mixin scroll-bar-x {
+  &::-webkit-scrollbar {
+    height: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #fe5f1e;
+  }
+}

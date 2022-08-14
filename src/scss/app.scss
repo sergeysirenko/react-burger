@@ -1,6 +1,6 @@
 @import 'variables';
 @import 'libs/normalize';
-
+@import "mixins";
 @import 'components/all';
 
 body {
@@ -11,28 +11,66 @@ body {
   width: calc(100vw - 100px);
   height: 100%;
   background-color: #fff;
-  margin: 50px auto;
+  margin: 20px auto;
   border-radius: 10px;
   max-width: 1400px;
+
+  @media (max-width: 645px) {
+    width: calc(100vw - 30px);
+    margin-top: 15px;
+  }
 }
 
 .content {
-  padding: 40px 0;
+  padding: 20px 0;
 
   &__title {
     margin: 35px 0;
+    font-weight: 800;
+    font-size: 38px;
   }
 
   &__items {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 11px;
   }
 
   &__top {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    @media (max-width: 1260px) {
+      .categories {
+        width: 100%;
+        overflow-x: auto;
+        @include scroll-bar-x;
+        margin-right: 10px;
+
+        ul {
+          margin-bottom: 2px;
+        }
+      }
+
+      .sort {
+        b {
+          display: none;
+        }
+      }
+    }
+
+    @media (max-width: 760px) {
+      .categories {
+        ul {
+          li {
+            padding: 8px 20px;
+          }
+        }
+      }
+
+    }
   }
 }
 
@@ -72,6 +110,10 @@ body {
         stroke-width: 1.9;
       }
     }
+  }
+
+  .content__items {
+    display: block;
   }
 
   &__clear {

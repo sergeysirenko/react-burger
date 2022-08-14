@@ -15,10 +15,12 @@ const Home = () => {
                 setBurgers(json);
                 setIsLoading(false);
             });
+
+        window.scrollTo(0, 0);
     }, []);
 
     return (
-        <React.Fragment>
+        <div className="container">
             <div className="content__top">
                 <Categories />
                 <Sort />
@@ -30,7 +32,7 @@ const Home = () => {
                     : burgers.map(burger => <BurgerBlock key={burger.id} {...burger} />)
                 }
             </div>
-        </React.Fragment>
+        </div>
     );
 };
 
