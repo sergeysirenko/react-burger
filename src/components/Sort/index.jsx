@@ -1,12 +1,24 @@
 import React from 'react';
 import classes from "./Sort.module.scss";
 
-const Index = () => {
+const Index = ({ value, onChangeSort }) => {
     const [open, setOpen] = React.useState(false);
-    const [selected, setSelected] = React.useState(0);
+
+    const list = [
+        { name: 'popularity (desc)', sortProperty: 'rating' },
+        { name: 'popularity (asc)', sortProperty: '-rating' },
+        { name: 'price (desc)', sortProperty: 'price' },
+        { name: 'price (asc)', sortProperty: '-price' },
+        { name: 'alphabet (desc)', sortProperty: 'title' },
+        { name: 'alphabet (asc)', sortProperty: '-title' },
+    ];
+
+    const onClickListItem = (obj) => {
+        onChangeSort(obj);
+        setOpen(false);
+    }
 
     const rootClasses = [classes.rotate, classes.active];
-    const sortFor = ['popularity', 'price', 'alphabet'];
 
     return (
         <div className='sort'>
@@ -25,21 +37,18 @@ const Index = () => {
                     />
                 </svg>
                 <b>Sort by:</b>
-                <span onClick={() => setOpen(!open)}>{sortFor[selected]}</span>
+                <span onClick={() => setOpen(!open)}>{value.name}</span>
             </div>
             {open && (
                 <div className='sort__popup'>
                     <ul>
-                        {sortFor.map((name, index) => (
+                        {list.map((obj, index) => (
                             <li
                                 key={index}
-                                className={selected === index ? 'active' : null}
-                                onClick={() => {
-                                    setSelected(index);
-                                    setOpen(false);
-                                }}
+                                className={value.sortProperty === obj.sortProperty ? 'active' : null}
+                                onClick={() => onClickListItem(obj)}
                             >
-                                {name}
+                                {obj.name}
                             </li>
                         ))}
                     </ul>
