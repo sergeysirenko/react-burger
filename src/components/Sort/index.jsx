@@ -1,5 +1,5 @@
 import React from 'react';
-import classes from "./Sort.module.scss";
+import classes from './Sort.module.scss';
 
 const Index = ({ value, onChangeSort }) => {
     const [open, setOpen] = React.useState(false);
@@ -16,7 +16,7 @@ const Index = ({ value, onChangeSort }) => {
     const onClickListItem = (obj) => {
         onChangeSort(obj);
         setOpen(false);
-    }
+    };
 
     const rootClasses = [classes.rotate, classes.active];
 
