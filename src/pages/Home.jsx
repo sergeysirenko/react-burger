@@ -29,8 +29,9 @@ const Home = ({ searchValue }) => {
         const sortBy = sortType.sortProperty.replace('-', '');
         const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
         const category = categoryId > 0 ? `category=${categoryId}` : '';
+        const search = searchValue ? `search=${searchValue}` : '';
 
-        fetch(`https://62f514e6535c0c50e769599a.mockapi.io/burgers?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}`)
+        fetch(`https://62f514e6535c0c50e769599a.mockapi.io/burgers?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}&${search}`)
             .then((res) => res.json())
             .then((json) => {
                 setBurgers(json);
@@ -39,7 +40,7 @@ const Home = ({ searchValue }) => {
             });
 
         window.scrollTo(0, 0);
-    }, [categoryId, sortType, currentPage]);
+    }, [categoryId, sortType, searchValue, currentPage]);
 
     return (
         <div className="container">
