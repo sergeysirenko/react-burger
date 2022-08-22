@@ -1,20 +1,25 @@
 import React from 'react';
 import classes from './Sort.module.scss';
+import {setSort} from "../../redux/slices/filterSlice";
+import {useDispatch, useSelector} from "react-redux";
 
-const Index = ({ value, onChangeSort }) => {
+const list = [
+    { name: 'popularity (desc)', sortProperty: 'rating' },
+    { name: 'popularity (asc)', sortProperty: '-rating' },
+    { name: 'price (desc)', sortProperty: 'price' },
+    { name: 'price (asc)', sortProperty: '-price' },
+    { name: 'alphabet (desc)', sortProperty: 'title' },
+    { name: 'alphabet (asc)', sortProperty: '-title' },
+];
+
+const Sort = () => {
     const [open, setOpen] = React.useState(false);
 
-    const list = [
-        { name: 'popularity (desc)', sortProperty: 'rating' },
-        { name: 'popularity (asc)', sortProperty: '-rating' },
-        { name: 'price (desc)', sortProperty: 'price' },
-        { name: 'price (asc)', sortProperty: '-price' },
-        { name: 'alphabet (desc)', sortProperty: 'title' },
-        { name: 'alphabet (asc)', sortProperty: '-title' },
-    ];
+    const dispatch = useDispatch();
+    const sort = useSelector((state) => state.filter.sort);
 
     const onClickListItem = (obj) => {
-        onChangeSort(obj);
+        dispatch(setSort(obj));
         setOpen(false);
     };
 
@@ -37,7 +42,7 @@ const Index = ({ value, onChangeSort }) => {
                     />
                 </svg>
                 <b>Sort by:</b>
-                <span onClick={() => setOpen(!open)}>{value.name}</span>
+                <span onClick={() => setOpen(!open)}>{sort.name}</span>
             </div>
             {open && (
                 <div className='sort__popup'>
@@ -45,7 +50,7 @@ const Index = ({ value, onChangeSort }) => {
                         {list.map((obj, index) => (
                             <li
                                 key={index}
-                                className={value.sortProperty === obj.sortProperty ? 'active' : null}
+                                className={sort.sortProperty === obj.sortProperty ? 'active' : null}
                                 onClick={() => onClickListItem(obj)}
                             >
                                 {obj.name}
@@ -58,4 +63,4 @@ const Index = ({ value, onChangeSort }) => {
     );
 };
 
-export default Index;
+export default Sort;
