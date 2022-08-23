@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from "axios";
 
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
@@ -8,13 +9,15 @@ import Pagination from "../components/Pagination"
 import {SearchContext} from "../App";
 
 import {useDispatch, useSelector} from 'react-redux';
-import {setCategoryId} from "../redux/slices/filterSlice";
+import {setCategoryId, setCurrentPage} from "../redux/slices/filterSlice";
+import useDebounce from "../hooks/useDebounce";
 
 const Home = () => {
     const { searchValue } = React.useContext(SearchContext);
+    const debouncedSearchTerm = useDebounce(searchValue, 500);
 
     const dispatch = useDispatch();
-    const { categoryId, sort } = useSelector((state) => state.filter);
+    const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
 
     const onChangeCategory = (id) => {
         dispatch(setCategoryId(id));
@@ -22,7 +25,6 @@ const Home = () => {
 
     const [burgers, setBurgers] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(true);
-    const [currentPage, setCurrentPage] = React.useState(1);
     const [totalPages, setTotalPages] = React.useState(1);
 
     const burgersInPage = 4;
@@ -37,18 +39,17 @@ const Home = () => {
         const sortBy = sort.sortProperty.replace('-', '');
         const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
         const category = categoryId > 0 ? `category=${categoryId}` : '';
-        const search = searchValue ? `search=${searchValue}` : '';
+        const search = debouncedSearchTerm ? `search=${debouncedSearchTerm}` : '';
 
-        fetch(`https://62f514e6535c0c50e769599a.mockapi.io/burgers?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}&${search}`)
-            .then((res) => res.json())
-            .then((json) => {
-                setBurgers(json);
+        axios.get(`https://62f514e6535c0c50e769599a.mockapi.io/burgers?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}&${search}`)
+            .then((res) => {
+                setBurgers(res.data);
                 setTotalPages(Math.ceil(10 / burgersInPage));
                 setIsLoading(false);
             });
 
         window.scrollTo(0, 0);
-    }, [categoryId, sort.sortProperty, searchValue, currentPage]);
+    }, [categoryId, sort.sortProperty, debouncedSearchTerm, currentPage]);
 
     return (
         <div className="container">
@@ -62,7 +63,7 @@ const Home = () => {
             </div>
                 <Pagination
                     burgersInPage={burgersInPage}
-                    onChangePage={(page) => setCurrentPage(page)}
+                    onChangePage={(page) => dispatch(setCurrentPage(page))}
                     totalPages={totalPages}
                 />
         </div>
