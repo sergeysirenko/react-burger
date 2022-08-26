@@ -2,6 +2,7 @@ import React from 'react';
 import classes from './Sort.module.scss';
 import {setSort} from "../../redux/slices/filterSlice";
 import {useDispatch, useSelector} from "react-redux";
+import useClickOutside from "../../hooks/useClickOutside";
 
 export const sortList = [
     { name: 'popularity (desc)', sortProperty: 'rating' },
@@ -14,6 +15,7 @@ export const sortList = [
 
 const Sort = () => {
     const [open, setOpen] = React.useState(false);
+    const sortRef = useClickOutside(() => setOpen(false));
 
     const dispatch = useDispatch();
     const sort = useSelector((state) => state.filter.sort);
@@ -25,8 +27,12 @@ const Sort = () => {
 
     const rootClasses = [classes.rotate, classes.active];
 
+    React.useEffect(() => {
+
+    }, [])
+
     return (
-        <div className='sort'>
+        <div className='sort' ref={sortRef}>
             <div className='sort__label'>
                 <svg
                     width='10'
