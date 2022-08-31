@@ -39,7 +39,7 @@ const Home = () => {
         .filter(burger => burger.title.toLowerCase().includes(searchValue.toLowerCase()))
         .map(burger => <BurgerBlock key={burger.id} {...burger} />);
 
-    const fetchBurgers = () => {
+    const fetchBurgers = async () => {
         setIsLoading(true);
 
         const sortBy = sort.sortProperty?.replace('-', '');
@@ -47,12 +47,15 @@ const Home = () => {
         const category = categoryId > 0 ? `category=${categoryId}` : '';
         const search = debouncedSearchTerm ? `search=${debouncedSearchTerm}` : '';
 
-        axios.get(`https://62f514e6535c0c50e769599a.mockapi.io/burgers?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}&${search}`)
-            .then((res) => {
-                setBurgers(res.data);
-                setTotalPages(Math.ceil(10 / burgersInPage));
-                setIsLoading(false);
-            });
+        try {
+            let res = await axios.get(`https://62f514e6535c0c50e769599a.mockapi.io/burgers?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}&${search}`);
+            setBurgers(res.data);
+            setTotalPages(Math.ceil(10 / burgersInPage));
+        } catch (error) {
+            console.log('Error', error);
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     React.useEffect(() => {
