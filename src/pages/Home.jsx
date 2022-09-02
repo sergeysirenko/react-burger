@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import qs from "qs";
 
@@ -9,6 +8,7 @@ import Skeleton from "../components/BurgerBlock/Skeleton";
 import BurgerBlock from "../components/BurgerBlock";
 import Pagination from "../components/Pagination"
 import {SearchContext} from "../App";
+import {fetchBurgers} from "../redux/slices/burgerSlice";
 
 import {useDispatch, useSelector} from 'react-redux';
 import {setCategoryId, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
@@ -24,13 +24,12 @@ const Home = () => {
     const debouncedSearchTerm = useDebounce(searchValue, 500);
 
     const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
+    const { burgers, status } = useSelector((state) => state.burger);
 
     const onChangeCategory = (id) => {
         dispatch(setCategoryId(id));
     }
 
-    const [burgers, setBurgers] = React.useState([]);
-    const [isLoading, setIsLoading] = React.useState(true);
     const [totalPages, setTotalPages] = React.useState(1);
 
     const burgersInPage = 4;
@@ -39,23 +38,15 @@ const Home = () => {
         .filter(burger => burger.title.toLowerCase().includes(searchValue.toLowerCase()))
         .map(burger => <BurgerBlock key={burger.id} {...burger} />);
 
-    const fetchBurgers = async () => {
-        setIsLoading(true);
-
+    const getBurgers = async () => {
         const sortBy = sort.sortProperty?.replace('-', '');
         const order = sort.sortProperty?.includes('-') ? 'asc' : 'desc';
         const category = categoryId > 0 ? `category=${categoryId}` : '';
         const search = debouncedSearchTerm ? `search=${debouncedSearchTerm}` : '';
 
-        try {
-            let res = await axios.get(`https://62f514e6535c0c50e769599a.mockapi.io/burgers?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}&${search}`);
-            setBurgers(res.data);
-            setTotalPages(Math.ceil(10 / burgersInPage));
-        } catch (error) {
-            console.log('Error', error);
-        } finally {
-            setIsLoading(false);
-        }
+        dispatch(fetchBurgers({ sortBy, order, category, search, currentPage }))
+
+        setTotalPages(Math.ceil(10 / burgersInPage));
     }
 
     React.useEffect(() => {
@@ -91,27 +82,32 @@ const Home = () => {
         window.scrollTo(0, 0);
 
         if(!isSearch.current) {
-            fetchBurgers();
+            getBurgers();
         }
 
         isSearch.current = false;
     }, [categoryId, sort.sortProperty, debouncedSearchTerm, currentPage]);
 
     return (
-        <div className="container">
-            <div className="content__top">
+        <div className='container'>
+            <div className='content__top'>
                 <Categories value={categoryId} onChangeCategory={onChangeCategory} />
                 <Sort />
             </div>
-            <h2 className="content__title">All burgers</h2>
-            <div className="content__items">
-                {isLoading ? skeletons : allBurgers}
-            </div>
-                <Pagination
-                    burgersInPage={burgersInPage}
-                    onChangePage={(page) => dispatch(setCurrentPage(page))}
-                    totalPages={totalPages}
-                />
+            <h2 className='content__title'>All burgers</h2>
+            {status === 'error' ? (
+                <div style={{ textAlign: 'center', marginBottom: 20 }}>
+                    <h2 style={{ fontSize: 50, marginBottom: 20 }}>Shit happens 💩</h2>
+                    <p style={{ fontSize: 30, marginBottom: 20 }}>Error from load burgers</p>
+                </div>
+            ) : (
+                <div className='content__items'>{status === 'loading' ? skeletons : allBurgers}</div>
+            )}
+
+            {
+                status === 'success' &&
+                <Pagination burgersInPage={burgersInPage} onChangePage={(page) => dispatch(setCurrentPage(page))} totalPages={totalPages} />
+            }
         </div>
     );
 };
