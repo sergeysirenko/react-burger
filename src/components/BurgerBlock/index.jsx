@@ -1,13 +1,13 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {addItem} from "../../redux/slices/cartSlice";
+import {addItem, selectCartItems} from "../../redux/slices/cartSlice";
 
 const BurgerBlock = ({id, title, price, imageUrl, steak, types}) => {
     const [activeType, setActiveType] = React.useState(0);
     const [activeSteak, setActiveSteak] = React.useState(0);
 
     const dispatch = useDispatch();
-    const burgers = useSelector((state) => state.cart.items);
+    const burgers = useSelector(selectCartItems);
 
     const typeNames = ['white', 'black'];
 

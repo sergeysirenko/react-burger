@@ -1,16 +1,18 @@
 import React from 'react';
 
 import styles from './Search.module.scss';
-import {SearchContext} from "../../App";
+import {useDispatch, useSelector} from "react-redux";
+import {setSearchValue, selectFilterSearch} from "../../redux/slices/filterSlice";
 
 const Search = () => {
-    const {searchValue, setSearchValue} = React.useContext(SearchContext);
-
+    const dispatch = useDispatch();
     const searchRef = React.useRef();
+
+    const searchValue = useSelector(selectFilterSearch);
 
     const clearSearch = () => {
         searchRef.current.focus();
-        setSearchValue('');
+        dispatch(setSearchValue(''));
     }
 
     return (
@@ -29,7 +31,7 @@ const Search = () => {
             <input
                 className={styles.input}
                 value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
+                onChange={(e) => dispatch(setSearchValue(e.target.value))}
                 type='text'
                 placeholder='Search burger...'
                 ref={searchRef}

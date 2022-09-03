@@ -7,11 +7,10 @@ import Sort, {sortList} from "../components/Sort";
 import Skeleton from "../components/BurgerBlock/Skeleton";
 import BurgerBlock from "../components/BurgerBlock";
 import Pagination from "../components/Pagination"
-import {SearchContext} from "../App";
-import {fetchBurgers} from "../redux/slices/burgerSlice";
+import {fetchBurgers, selectBurgerData} from "../redux/slices/burgerSlice";
 
 import {useDispatch, useSelector} from 'react-redux';
-import {setCategoryId, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
+import {selectFilter, selectFilterSearch, setCategoryId, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
 import useDebounce from "../hooks/useDebounce";
 
 const Home = () => {
@@ -20,11 +19,11 @@ const Home = () => {
     const isSearch = React.useRef(false);
     const isMounted = React.useRef(false);
 
-    const { searchValue } = React.useContext(SearchContext);
+    const searchValue = useSelector(selectFilterSearch);
     const debouncedSearchTerm = useDebounce(searchValue, 500);
 
-    const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
-    const { burgers, status } = useSelector((state) => state.burger);
+    const { categoryId, sort, currentPage } = useSelector(selectFilter);
+    const { burgers, status } = useSelector(selectBurgerData);
 
     const onChangeCategory = (id) => {
         dispatch(setCategoryId(id));
@@ -104,10 +103,7 @@ const Home = () => {
                 <div className='content__items'>{status === 'loading' ? skeletons : allBurgers}</div>
             )}
 
-            {
-                status === 'success' &&
-                <Pagination burgersInPage={burgersInPage} onChangePage={(page) => dispatch(setCurrentPage(page))} totalPages={totalPages} />
-            }
+            <Pagination burgersInPage={burgersInPage} onChangePage={(page) => dispatch(setCurrentPage(page))} totalPages={totalPages} />
         </div>
     );
 };

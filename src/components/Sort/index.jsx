@@ -1,6 +1,6 @@
 import React from 'react';
 import classes from './Sort.module.scss';
-import {setSort} from "../../redux/slices/filterSlice";
+import {selectFilter, setSort} from "../../redux/slices/filterSlice";
 import {useDispatch, useSelector} from "react-redux";
 import useClickOutside from "../../hooks/useClickOutside";
 
@@ -18,7 +18,7 @@ const Sort = () => {
     const sortRef = useClickOutside(() => setOpen(false));
 
     const dispatch = useDispatch();
-    const sort = useSelector((state) => state.filter.sort);
+    const { sort } = useSelector(selectFilter);
 
     const onClickListItem = (obj) => {
         dispatch(setSort(obj));

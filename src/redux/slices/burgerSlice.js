@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
 
-export const fetchBurgers = createAsyncThunk('burger/fetchBurgersStatus', async (params) => {
+export const fetchBurgers = createAsyncThunk('burger/fetchBurgersStatus', async (params, thunkAPI) => {
     const { sortBy, order, category, search, currentPage } = params;
-    let mockApiUrl = 'https://-62f514e6535c0c50e769599a.mockapi.io/burgers';
+    let mockApiUrl = 'https://62f514e6535c0c50e769599a.mockapi.io/burgers';
     const { data } = await axios.get(
         `${mockApiUrl}?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}&${search}`
     );
+    console.log(thunkAPI.getState())
     return data;
 })
 
@@ -33,5 +34,7 @@ export const burgerSlice = createSlice({
         }
     }
 });
+
+export const selectBurgerData = (state) => state.burger;
 
 export default burgerSlice.reducer
