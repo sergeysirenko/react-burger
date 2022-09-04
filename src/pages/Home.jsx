@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import qs from "qs";
 
 import Categories from "../components/Categories";
@@ -7,7 +7,7 @@ import Sort, {sortList} from "../components/Sort";
 import Skeleton from "../components/BurgerBlock/Skeleton";
 import BurgerBlock from "../components/BurgerBlock";
 import Pagination from "../components/Pagination"
-import {fetchBurgers, selectBurgerData} from "../redux/slices/burgerSlice";
+import {fetchBurgers, selectBurgersData} from "../redux/slices/burgerSlice";
 
 import {useDispatch, useSelector} from 'react-redux';
 import {selectFilter, selectFilterSearch, setCategoryId, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
@@ -23,7 +23,7 @@ const Home = () => {
     const debouncedSearchTerm = useDebounce(searchValue, 500);
 
     const { categoryId, sort, currentPage } = useSelector(selectFilter);
-    const { burgers, status } = useSelector(selectBurgerData);
+    const { burgers, status } = useSelector(selectBurgersData);
 
     const onChangeCategory = (id) => {
         dispatch(setCategoryId(id));
@@ -35,7 +35,7 @@ const Home = () => {
     const skeletons = [...new Array(burgersInPage)].map((_, i) => <Skeleton key={i} />);
     const allBurgers = burgers
         .filter(burger => burger.title.toLowerCase().includes(searchValue.toLowerCase()))
-        .map(burger => <BurgerBlock key={burger.id} {...burger} />);
+        .map(burger => <Link to={`/burger/${burger.id}`} key={burger.id}><BurgerBlock {...burger} /></Link>);
 
     const getBurgers = async () => {
         const sortBy = sort.sortProperty?.replace('-', '');
