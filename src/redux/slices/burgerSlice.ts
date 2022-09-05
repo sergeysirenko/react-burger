@@ -10,10 +10,13 @@ export const fetchBurgers = createAsyncThunk('burger/fetchBurgersStatus', async 
     return data;
 })
 
-export const fetchOneBurger = createAsyncThunk('burger/fetchOneBurger', async (id, thunkAPI) => {
-    const { data } = await axios.get(`https://62f514e6535c0c50e769599a.mockapi.io/burgers/${id}`);
-    return data;
-})
+export const fetchOneBurger = createAsyncThunk(
+    'burger/fetchOneBurger',
+    async (id, thunkAPI) => {
+        const { data } = await axios.get(`https://62f514e6535c0c50e769599a.mockapi.io/burgers/${id}`);
+        return data;
+    }
+)
 
 const initialState = {
     burgers: [],

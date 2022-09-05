@@ -1,10 +1,10 @@
 import React from 'react';
 
-export default function useClickOutside(callback) {
-    const ref = React.useRef(null);
+export default function useClickOutside(callback: any) {
+    const ref = React.useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
-        function handleClickOutside(event) {
+        function handleClickOutside(event: any) {
             if (ref.current && !ref.current.contains(event.target)) {
                 callback();
             }

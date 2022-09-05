@@ -1,12 +1,13 @@
 import React from 'react';
 import {useParams, useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {fetchOneBurger, selectBurger, selectBurgersData} from "../redux/slices/burgerSlice";
+import {useAppDispatch} from "../redux/hooks";
 
-const FullBurger = () => {
+const FullBurger: React.FC = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const { status } = useSelector(selectBurgersData);
 
     React.useEffect(() => {

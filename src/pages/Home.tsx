@@ -13,7 +13,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {selectFilter, selectFilterSearch, setCategoryId, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
 import useDebounce from "../hooks/useDebounce";
 
-const Home = () => {
+const Home: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const isSearch = React.useRef(false);
@@ -25,7 +25,7 @@ const Home = () => {
     const { categoryId, sort, currentPage } = useSelector(selectFilter);
     const { burgers, status } = useSelector(selectBurgersData);
 
-    const onChangeCategory = (id) => {
+    const onChangeCategory = (id: number) => {
         dispatch(setCategoryId(id));
     }
 
@@ -34,8 +34,8 @@ const Home = () => {
     const burgersInPage = 4;
     const skeletons = [...new Array(burgersInPage)].map((_, i) => <Skeleton key={i} />);
     const allBurgers = burgers
-        .filter(burger => burger.title.toLowerCase().includes(searchValue.toLowerCase()))
-        .map(burger => <Link to={`/burger/${burger.id}`} key={burger.id}><BurgerBlock {...burger} /></Link>);
+        .filter((burger: any) => burger.title.toLowerCase().includes(searchValue.toLowerCase()))
+        .map((burger: any) => <Link to={`/burger/${burger.id}`} key={burger.id}><BurgerBlock {...burger} /></Link>);
 
     const getBurgers = async () => {
         const sortBy = sort.sortProperty?.replace('-', '');
@@ -43,7 +43,10 @@ const Home = () => {
         const category = categoryId > 0 ? `category=${categoryId}` : '';
         const search = debouncedSearchTerm ? `search=${debouncedSearchTerm}` : '';
 
-        dispatch(fetchBurgers({ sortBy, order, category, search, currentPage }))
+        dispatch(
+            // @ts-ignore
+            fetchBurgers({ sortBy, order, category, search, currentPage })
+        )
 
         setTotalPages(Math.ceil(10 / burgersInPage));
     }
@@ -103,7 +106,7 @@ const Home = () => {
                 <div className='content__items'>{status === 'loading' ? skeletons : allBurgers}</div>
             )}
 
-            <Pagination burgersInPage={burgersInPage} onChangePage={(page) => dispatch(setCurrentPage(page))} totalPages={totalPages} />
+            <Pagination burgersInPage={burgersInPage} onChangePage={(page: number) => dispatch(setCurrentPage(page))} totalPages={totalPages} />
         </div>
     );
 };

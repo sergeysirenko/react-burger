@@ -4,7 +4,12 @@ import {selectFilter, setSort} from "../../redux/slices/filterSlice";
 import {useDispatch, useSelector} from "react-redux";
 import useClickOutside from "../../hooks/useClickOutside";
 
-export const sortList = [
+type SortListItem = {
+    name: string;
+    sortProperty: string;
+}
+
+export const sortList: SortListItem[] = [
     { name: 'popularity (desc)', sortProperty: 'rating' },
     { name: 'popularity (asc)', sortProperty: '-rating' },
     { name: 'price (desc)', sortProperty: 'price' },
@@ -13,14 +18,14 @@ export const sortList = [
     { name: 'alphabet (asc)', sortProperty: '-title' },
 ];
 
-const Sort = () => {
+const Sort: React.FC = () => {
     const [open, setOpen] = React.useState(false);
     const sortRef = useClickOutside(() => setOpen(false));
 
     const dispatch = useDispatch();
     const { sort } = useSelector(selectFilter);
 
-    const onClickListItem = (obj) => {
+    const onClickListItem = (obj: SortListItem) => {
         dispatch(setSort(obj));
         setOpen(false);
     };
@@ -56,7 +61,7 @@ const Sort = () => {
                         {sortList.map((obj, index) => (
                             <li
                                 key={index}
-                                className={sort.sortProperty === obj.sortProperty ? 'active' : null}
+                                className={sort.sortProperty === obj.sortProperty ? 'active' : ''}
                                 onClick={() => onClickListItem(obj)}
                             >
                                 {obj.name}

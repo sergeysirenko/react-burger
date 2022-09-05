@@ -4,14 +4,14 @@ import styles from './Search.module.scss';
 import {useDispatch, useSelector} from "react-redux";
 import {setSearchValue, selectFilterSearch} from "../../redux/slices/filterSlice";
 
-const Search = () => {
+const Search: React.FC = () => {
     const dispatch = useDispatch();
-    const searchRef = React.useRef();
+    const searchRef = React.useRef<HTMLInputElement>(null);
 
     const searchValue = useSelector(selectFilterSearch);
 
     const clearSearch = () => {
-        searchRef.current.focus();
+        searchRef.current?.focus();
         dispatch(setSearchValue(''));
     }
 

@@ -2,7 +2,16 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {addItem, selectCartItems} from "../../redux/slices/cartSlice";
 
-const BurgerBlock = ({id, title, price, imageUrl, steak, types}) => {
+type BurgerBlockProps = {
+    id: string;
+    title: string;
+    price: string;
+    imageUrl: string;
+    steak: number[];
+    types: number[];
+}
+
+const BurgerBlock: React.FC<BurgerBlockProps> = ({id, title, price, imageUrl, steak, types}) => {
     const [activeType, setActiveType] = React.useState(0);
     const [activeSteak, setActiveSteak] = React.useState(0);
 
@@ -11,7 +20,7 @@ const BurgerBlock = ({id, title, price, imageUrl, steak, types}) => {
 
     const typeNames = ['white', 'black'];
 
-    const burgersInCart = burgers.filter((burger) => burger.id === id)[0]?.count;
+    const burgersInCart = burgers.filter((burger: BurgerBlockProps) => burger.id === id)[0]?.count;
 
     const addBurger = () => {
         dispatch(addItem({
