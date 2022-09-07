@@ -7,7 +7,7 @@ import Sort, {sortList} from "../components/Sort";
 import Skeleton from "../components/BurgerBlock/Skeleton";
 import BurgerBlock from "../components/BurgerBlock";
 import Pagination from "../components/Pagination"
-import {fetchBurgers, selectBurgersData} from "../redux/slices/burgerSlice";
+import {BurgerItemType, fetchBurgers, selectBurgersData} from "../redux/slices/burgerSlice";
 
 import {useDispatch, useSelector} from 'react-redux';
 import {selectFilter, selectFilterSearch, setCategoryId, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
@@ -25,8 +25,8 @@ const Home: React.FC = () => {
     const { categoryId, sort, currentPage } = useSelector(selectFilter);
     const { burgers, status } = useSelector(selectBurgersData);
 
-    const onChangeCategory = (id: number) => {
-        dispatch(setCategoryId(id));
+    const onChangeCategory = (index: number) => {
+        dispatch(setCategoryId(index));
     }
 
     const [totalPages, setTotalPages] = React.useState(1);
@@ -34,8 +34,8 @@ const Home: React.FC = () => {
     const burgersInPage = 4;
     const skeletons = [...new Array(burgersInPage)].map((_, i) => <Skeleton key={i} />);
     const allBurgers = burgers
-        .filter((burger: any) => burger.title.toLowerCase().includes(searchValue.toLowerCase()))
-        .map((burger: any) => <Link to={`/burger/${burger.id}`} key={burger.id}><BurgerBlock {...burger} /></Link>);
+        .filter((burger: BurgerItemType) => burger.title.toLowerCase().includes(searchValue.toLowerCase()))
+        .map((burger: BurgerItemType) => <Link to={`/burger/${burger.id}`} key={burger.id}><BurgerBlock {...burger} /></Link>);
 
     const getBurgers = async () => {
         const sortBy = sort.sortProperty?.replace('-', '');
@@ -55,12 +55,9 @@ const Home: React.FC = () => {
         if (window.location.search) {
             const params = qs.parse(window.location.search.substring(1));
 
-            const sort = sortList.find(obj => obj.sortProperty === params.sortProperty)
+            let sort = sortList.find(obj => obj.sortProperty === params.sortProperty)
 
-            dispatch(setFilters({
-                ...params,
-                sort,
-            }))
+            dispatch(setFilters({...params, sort}))
 
             isSearch.current = true;
         }

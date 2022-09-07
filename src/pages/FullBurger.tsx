@@ -11,7 +11,7 @@ const FullBurger: React.FC = () => {
     const { status } = useSelector(selectBurgersData);
 
     React.useEffect(() => {
-        dispatch(fetchOneBurger(id));
+        if (id) dispatch(fetchOneBurger(id));
     }, [])
 
     React.useEffect(() => {
@@ -23,7 +23,7 @@ const FullBurger: React.FC = () => {
 
     const oneBurger = useSelector(selectBurger);
 
-    if(!Object.entries(oneBurger).length) {
+    if(oneBurger === null) {
         return (
             <div className='container' style={{ textAlign: "center" }}>
                 <h4 style={{ fontSize: 30, marginTop: 20 }}>...Loading</h4>

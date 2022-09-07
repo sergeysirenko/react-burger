@@ -1,61 +1,86 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
+import {RootState} from "../store";
 
-export const fetchBurgers = createAsyncThunk('burger/fetchBurgersStatus', async (params, thunkAPI) => {
-    const { sortBy, order, category, search, currentPage } = params;
-    let mockApiUrl = 'https://62f514e6535c0c50e769599a.mockapi.io/burgers';
-    const { data } = await axios.get(
-        `${mockApiUrl}?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}&${search}`
-    );
-    return data;
-})
+export type BurgerItemType = {
+    id: string;
+    title: string;
+    price: number;
+    imageUrl: string;
+    steak: number[];
+    types: number[];
+}
 
-export const fetchOneBurger = createAsyncThunk(
-    'burger/fetchOneBurger',
-    async (id, thunkAPI) => {
-        const { data } = await axios.get(`https://62f514e6535c0c50e769599a.mockapi.io/burgers/${id}`);
+interface BurgerSliceState {
+    burgers: BurgerItemType[];
+    oneBurger: BurgerItemType | null;
+    status: 'loading' | 'success' | 'error';
+}
+
+export const fetchBurgers = createAsyncThunk<BurgerItemType[], Record<string, string>>(
+    'burger/fetchBurgersStatus',
+    async (params) => {
+        const { sortBy, order, category, search, currentPage } = params;
+        let mockApiUrl = 'https://62f514e6535c0c50e769599a.mockapi.io/burgers';
+        const { data } = await axios.get<BurgerItemType[]>(
+            `${mockApiUrl}?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}&${search}`
+        );
         return data;
     }
 )
 
-const initialState = {
+export const fetchOneBurger = createAsyncThunk<BurgerItemType, string>(
+    'burger/fetchOneBurger',
+    async (id) => {
+        const { data } = await axios.get<BurgerItemType>(`https://62f514e6535c0c50e769599a.mockapi.io/burgers/${id}`);
+        return data;
+    }
+)
+
+const initialState: BurgerSliceState = {
     burgers: [],
-    oneBurger: {},
+    oneBurger: null,
     status: 'loading', // loading, success, error
 };
 
 export const burgerSlice = createSlice({
+    reducers: {},
     name: 'burger',
     initialState,
-    extraReducers: {
-        [fetchBurgers.pending]: (state) => {
+    extraReducers: (builder) => {
+        builder.addCase(fetchBurgers.pending, (state) => {
             state.status = 'loading';
             state.burgers = [];
-        },
-        [fetchBurgers.fulfilled]: (state, action) => {
+        })
+
+        builder.addCase(fetchBurgers.fulfilled, (state, action) => {
             state.burgers = action.payload;
             state.status = 'success';
-        },
-        [fetchBurgers.rejected]: (state) => {
+        })
+
+        builder.addCase(fetchBurgers.rejected, (state) => {
             state.status = 'error';
             state.burgers = [];
-        },
-        [fetchOneBurger.pending]: (state) => {
+        })
+
+        builder.addCase(fetchOneBurger.pending, (state) => {
             state.status = 'loading';
-            state.oneBurger = {};
-        },
-        [fetchOneBurger.fulfilled]: (state, action) => {
+            state.oneBurger = null;
+        })
+
+        builder.addCase(fetchOneBurger.fulfilled, (state, action) => {
             state.oneBurger = action.payload;
             state.status = 'success';
-        },
-        [fetchOneBurger.rejected]: (state) => {
+        })
+
+        builder.addCase(fetchOneBurger.rejected, (state) => {
             state.status = 'error';
-            state.oneBurger = {};
-        },
+            state.oneBurger = null;
+        })
     }
 });
 
-export const selectBurgersData = (state) => state.burger;
-export const selectBurger = (state) => state.burger.oneBurger;
+export const selectBurgersData = (state: RootState) => state.burger;
+export const selectBurger = (state: RootState) => state.burger.oneBurger;
 
 export default burgerSlice.reducer

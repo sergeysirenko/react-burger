@@ -1,17 +1,9 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {addItem, selectCartItems} from "../../redux/slices/cartSlice";
+import {addItem, CartItemType, selectCartItems} from "../../redux/slices/cartSlice";
+import {BurgerItemType} from "../../redux/slices/burgerSlice";
 
-type BurgerBlockProps = {
-    id: string;
-    title: string;
-    price: string;
-    imageUrl: string;
-    steak: number[];
-    types: number[];
-}
-
-const BurgerBlock: React.FC<BurgerBlockProps> = ({id, title, price, imageUrl, steak, types}) => {
+const BurgerBlock: React.FC<BurgerItemType> = ({id, title, price, imageUrl, steak, types}) => {
     const [activeType, setActiveType] = React.useState(0);
     const [activeSteak, setActiveSteak] = React.useState(0);
 
@@ -20,9 +12,10 @@ const BurgerBlock: React.FC<BurgerBlockProps> = ({id, title, price, imageUrl, st
 
     const typeNames = ['white', 'black'];
 
-    const burgersInCart = burgers.filter((burger: BurgerBlockProps) => burger.id === id)[0]?.count;
+    const burgersInCart = burgers.filter((burger: CartItemType) => burger.id === id)[0]?.count;
 
     const addBurger = () => {
+        console.log(typeNames[activeType])
         dispatch(addItem({
             id,
             title,
@@ -30,6 +23,7 @@ const BurgerBlock: React.FC<BurgerBlockProps> = ({id, title, price, imageUrl, st
             imageUrl,
             steak: steak[activeSteak],
             types: typeNames[activeType],
+            count: 0
         }))
     }
 

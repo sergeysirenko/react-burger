@@ -6,7 +6,7 @@ import styles from "./Pagination.module.scss";
 type PaginationProps = {
     burgersInPage: number;
     totalPages: number;
-    onChangePage: any;
+    onChangePage: (page: number) => void;
 }
 
 const Pagination: React.FC<PaginationProps> = ({ burgersInPage, totalPages, onChangePage }) => {
@@ -15,7 +15,7 @@ const Pagination: React.FC<PaginationProps> = ({ burgersInPage, totalPages, onCh
             className={styles.root}
             breakLabel="..."
             nextLabel=">"
-            onPageChange={e => onChangePage(e.selected + 1)}
+            onPageChange={event => onChangePage(event.selected + 1)}
             pageRangeDisplayed={burgersInPage}
             pageCount={totalPages}
             previousLabel="<"
