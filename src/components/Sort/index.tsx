@@ -1,16 +1,16 @@
 import React from 'react';
 import classes from './Sort.module.scss';
-import {selectFilter, setSort, SortType} from "../../redux/slices/filterSlice";
+import {selectFilter, setSort, SortPropertyEnum, SortType} from "../../redux/slices/filterSlice";
 import {useDispatch, useSelector} from "react-redux";
 import useClickOutside from "../../hooks/useClickOutside";
 
 export const sortList: SortType[] = [
-    { name: 'popularity (desc)', sortProperty: 'rating' },
-    { name: 'popularity (asc)', sortProperty: '-rating' },
-    { name: 'price (desc)', sortProperty: 'price' },
-    { name: 'price (asc)', sortProperty: '-price' },
-    { name: 'alphabet (desc)', sortProperty: 'title' },
-    { name: 'alphabet (asc)', sortProperty: '-title' },
+    { name: 'popularity (desc)', sortProperty: SortPropertyEnum.RATING_DESC },
+    { name: 'popularity (asc)', sortProperty: SortPropertyEnum.RATING_ASC },
+    { name: 'price (desc)', sortProperty: SortPropertyEnum.PRICE_DESC },
+    { name: 'price (asc)', sortProperty: SortPropertyEnum.PRICE_ASC },
+    { name: 'alphabet (desc)', sortProperty: SortPropertyEnum.TITLE_DESC },
+    { name: 'alphabet (asc)', sortProperty: SortPropertyEnum.TITLE_ASC },
 ];
 
 const Sort: React.FC = () => {

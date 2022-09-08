@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import qs from "qs";
 
 import Categories from "../components/Categories";
@@ -9,13 +9,14 @@ import BurgerBlock from "../components/BurgerBlock";
 import Pagination from "../components/Pagination"
 import {BurgerItemType, fetchBurgers, selectBurgersData} from "../redux/slices/burgerSlice";
 
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {selectFilter, selectFilterSearch, setCategoryId, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
 import useDebounce from "../hooks/useDebounce";
+import {useAppDispatch} from "../redux/hooks";
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const isSearch = React.useRef(false);
     const isMounted = React.useRef(false);
 
@@ -35,7 +36,7 @@ const Home: React.FC = () => {
     const skeletons = [...new Array(burgersInPage)].map((_, i) => <Skeleton key={i} />);
     const allBurgers = burgers
         .filter((burger: BurgerItemType) => burger.title.toLowerCase().includes(searchValue.toLowerCase()))
-        .map((burger: BurgerItemType) => <Link to={`/burger/${burger.id}`} key={burger.id}><BurgerBlock {...burger} /></Link>);
+        .map((burger: BurgerItemType) => <BurgerBlock key={burger.id} {...burger} />);
 
     const getBurgers = async () => {
         const sortBy = sort.sortProperty?.replace('-', '');
@@ -43,10 +44,7 @@ const Home: React.FC = () => {
         const category = categoryId > 0 ? `category=${categoryId}` : '';
         const search = debouncedSearchTerm ? `search=${debouncedSearchTerm}` : '';
 
-        dispatch(
-            // @ts-ignore
-            fetchBurgers({ sortBy, order, category, search, currentPage })
-        )
+        dispatch(fetchBurgers({ sortBy, order, category, search, currentPage: String(currentPage) }))
 
         setTotalPages(Math.ceil(10 / burgersInPage));
     }

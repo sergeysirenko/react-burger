@@ -14,7 +14,13 @@ export type BurgerItemType = {
 interface BurgerSliceState {
     burgers: BurgerItemType[];
     oneBurger: BurgerItemType | null;
-    status: 'loading' | 'success' | 'error';
+    status: Status;
+}
+
+export enum Status {
+    LOADING = 'loading',
+    SUCCESS = 'success',
+    ERROR = 'error',
 }
 
 export const fetchBurgers = createAsyncThunk<BurgerItemType[], Record<string, string>>(
@@ -40,7 +46,7 @@ export const fetchOneBurger = createAsyncThunk<BurgerItemType, string>(
 const initialState: BurgerSliceState = {
     burgers: [],
     oneBurger: null,
-    status: 'loading', // loading, success, error
+    status: Status.LOADING, // loading, success, error
 };
 
 export const burgerSlice = createSlice({
@@ -49,32 +55,32 @@ export const burgerSlice = createSlice({
     initialState,
     extraReducers: (builder) => {
         builder.addCase(fetchBurgers.pending, (state) => {
-            state.status = 'loading';
+            state.status = Status.LOADING;
             state.burgers = [];
         })
 
         builder.addCase(fetchBurgers.fulfilled, (state, action) => {
             state.burgers = action.payload;
-            state.status = 'success';
+            state.status = Status.SUCCESS;
         })
 
         builder.addCase(fetchBurgers.rejected, (state) => {
-            state.status = 'error';
+            state.status = Status.ERROR;
             state.burgers = [];
         })
 
         builder.addCase(fetchOneBurger.pending, (state) => {
-            state.status = 'loading';
+            state.status = Status.LOADING;
             state.oneBurger = null;
         })
 
         builder.addCase(fetchOneBurger.fulfilled, (state, action) => {
             state.oneBurger = action.payload;
-            state.status = 'success';
+            state.status = Status.SUCCESS;
         })
 
         builder.addCase(fetchOneBurger.rejected, (state) => {
-            state.status = 'error';
+            state.status = Status.ERROR;
             state.oneBurger = null;
         })
     }

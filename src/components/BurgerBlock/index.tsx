@@ -2,6 +2,7 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {addItem, CartItemType, selectCartItems} from "../../redux/slices/cartSlice";
 import {BurgerItemType} from "../../redux/slices/burgerSlice";
+import {Link} from "react-router-dom";
 
 const BurgerBlock: React.FC<BurgerItemType> = ({id, title, price, imageUrl, steak, types}) => {
     const [activeType, setActiveType] = React.useState(0);
@@ -30,8 +31,10 @@ const BurgerBlock: React.FC<BurgerItemType> = ({id, title, price, imageUrl, stea
     return (
         <div className='burger-block-wrapper'>
             <div className='burger-block'>
-                <img className='burger-block__image' src={imageUrl} alt={title} />
-                <h4 className='burger-block__title'>{title}</h4>
+                <Link to={`/burger/${id}`}>
+                    <img className='burger-block__image' src={imageUrl} alt={title} />
+                    <h4 className='burger-block__title'>{title}</h4>
+                </Link>
                 <div className='burger-block__selector'>
                     <ul>
                         {types.map((type, index) => (
