@@ -1,5 +1,8 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {RootState} from "../store";
+import {getCartFromLS} from "../../utils/getCartFromLS";
+import {calcTotalPrice} from "../../utils/calcTotalPrice";
+import {calcTotalBurgers} from "../../utils/calcTotalBurgers";
 
 export type CartItemType = {
     id: string;
@@ -17,10 +20,12 @@ interface CartSliceState {
     items: CartItemType[]
 }
 
+const { items, totalBurgers, totalPrice } = getCartFromLS();
+
 const initialState: CartSliceState = {
-    totalPrice: 0,
-    totalBurgers: 0,
-    items: []
+    totalPrice,
+    totalBurgers,
+    items,
 }
 
 export const cartSlice = createSlice({
@@ -33,28 +38,28 @@ export const cartSlice = createSlice({
             if (findItem) findItem.count++;
             else state.items.push({...action.payload, count: 1});
 
-            state.totalPrice = state.items.reduce((sum, item) => item.price * item.count + sum, 0);
-            state.totalBurgers = state.items.reduce((sum, item) => item.count + sum, 0);
+            state.totalPrice = calcTotalPrice(state.items);
+            state.totalBurgers = calcTotalBurgers(state.items);
         },
         increaseCount(state, action: PayloadAction<string>) {
             const findItem = state.items.find(item => item.id === action.payload)
             if (findItem) findItem.count++;
 
-            state.totalPrice = state.items.reduce((sum, item) => item.price * item.count + sum, 0);
-            state.totalBurgers = state.items.reduce((sum, item) => item.count + sum, 0);
+            state.totalPrice = calcTotalPrice(state.items);
+            state.totalBurgers = calcTotalBurgers(state.items);
         },
         decreaseCount(state, action: PayloadAction<string>) {
             const findItem = state.items.find(item => item.id === action.payload)
             if (findItem) findItem.count--;
 
-            state.totalPrice = state.items.reduce((sum, item) => item.price * item.count + sum, 0);
-            state.totalBurgers = state.items.reduce((sum, item) => item.count + sum, 0);
+            state.totalPrice = calcTotalPrice(state.items);
+            state.totalBurgers = calcTotalBurgers(state.items);
         },
         deleteItem(state, action: PayloadAction<string>) {
             state.items = state.items.filter(item => item.id !== action.payload);
 
-            state.totalPrice = state.items.reduce((sum, item) => item.price * item.count + sum, 0);
-            state.totalBurgers = state.items.reduce((sum, item) => item.count + sum, 0);
+            state.totalPrice = calcTotalPrice(state.items);
+            state.totalBurgers = calcTotalBurgers(state.items);
         },
         deleteAll(state) {
             state.items = [];

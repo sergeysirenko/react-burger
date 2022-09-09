@@ -95,7 +95,7 @@ const Cart: React.FC = () => {
                             Total Burgers: <b>{totalBurgers}</b>{' '}
                         </span>
                         <span>
-                            Order price: <b>$ {(totalPrice).toFixed(2)}</b>{' '}
+                            Order price: <b>$ {totalPrice}</b>{' '}
                         </span>
                     </div>
                     <div className='cart__bottom-buttons'>
