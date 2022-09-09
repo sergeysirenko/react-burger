@@ -26,9 +26,9 @@ const Home: React.FC = () => {
     const { categoryId, sort, currentPage } = useSelector(selectFilter);
     const { burgers, status } = useSelector(selectBurgersData);
 
-    const onChangeCategory = (index: number) => {
+    const onChangeCategory = React.useCallback((index: number) => {
         dispatch(setCategoryId(index));
-    }
+    }, [])
 
     const [totalPages, setTotalPages] = React.useState(1);
 
@@ -89,7 +89,7 @@ const Home: React.FC = () => {
         <div className='container'>
             <div className='content__top'>
                 <Categories value={categoryId} onChangeCategory={onChangeCategory} />
-                <Sort />
+                <Sort value={sort} />
             </div>
             <h2 className='content__title'>All burgers</h2>
             {status === 'error' ? (

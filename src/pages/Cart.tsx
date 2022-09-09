@@ -95,7 +95,7 @@ const Cart: React.FC = () => {
                             Total Burgers: <b>{totalBurgers}</b>{' '}
                         </span>
                         <span>
-                            Order price: <b>$ {totalPrice}</b>{' '}
+                            Order price: <b>$ {(totalPrice).toFixed(2)}</b>{' '}
                         </span>
                     </div>
                     <div className='cart__bottom-buttons'>
@@ -113,7 +113,7 @@ const Cart: React.FC = () => {
                             <span>Go back</span>
                         </Link>
                         <div className='button pay-btn'>
-                            <span>Pay Now</span>
+                            <span>Order Now</span>
                         </div>
                     </div>
                 </div>

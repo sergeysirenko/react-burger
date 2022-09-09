@@ -13,12 +13,15 @@ export const sortList: SortType[] = [
     { name: 'alphabet (asc)', sortProperty: SortPropertyEnum.TITLE_ASC },
 ];
 
-const Sort: React.FC = () => {
+type SortProps = {
+    value: SortType;
+}
+
+const Sort: React.FC<SortProps> = React.memo(({value}) => {
     const [open, setOpen] = React.useState(false);
     const sortRef = useClickOutside(() => setOpen(false));
 
     const dispatch = useDispatch();
-    const { sort } = useSelector(selectFilter);
 
     const onClickListItem = (obj: SortType) => {
         dispatch(setSort(obj));
@@ -48,7 +51,7 @@ const Sort: React.FC = () => {
                     />
                 </svg>
                 <b>Sort by:</b>
-                <span onClick={() => setOpen(!open)}>{sort.name}</span>
+                <span onClick={() => setOpen(!open)}>{value.name}</span>
             </div>
             {open && (
                 <div className='sort__popup'>
@@ -56,7 +59,7 @@ const Sort: React.FC = () => {
                         {sortList.map((obj, index) => (
                             <li
                                 key={index}
-                                className={sort.sortProperty === obj.sortProperty ? 'active' : ''}
+                                className={value.sortProperty === obj.sortProperty ? 'active' : ''}
                                 onClick={() => onClickListItem(obj)}
                             >
                                 {obj.name}
@@ -67,6 +70,6 @@ const Sort: React.FC = () => {
             )}
         </div>
     );
-};
+});
 
 export default Sort;

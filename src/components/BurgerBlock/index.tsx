@@ -16,7 +16,6 @@ const BurgerBlock: React.FC<BurgerItemType> = ({id, title, price, imageUrl, stea
     const burgersInCart = burgers.filter((burger: CartItemType) => burger.id === id)[0]?.count;
 
     const addBurger = () => {
-        console.log(typeNames[activeType])
         dispatch(addItem({
             id,
             title,

@@ -201,6 +201,17 @@ body {
             display: none;
           }
         }
+        &:disabled {
+          transform: none;
+          cursor: not-allowed;
+          border-color: gray;
+          svg path {
+            fill: gray;
+          }
+          &:hover, &:focus, &:active {
+            background-color: transparent;
+          }
+        }
       }
 
       b {
