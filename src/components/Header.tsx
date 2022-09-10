@@ -32,7 +32,7 @@ const Header: React.FC = () => {
                 </Link>
                 {location.pathname !== '/cart' &&
                     <React.Fragment>
-                        <Search />
+                        {!location.pathname.includes('/burger/') && <Search />}
                         <div className="header__cart">
                             <Link to="/cart" className="button button--cart">
                                 <span>$ {totalPrice}</span>

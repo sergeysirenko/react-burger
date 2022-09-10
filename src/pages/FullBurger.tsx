@@ -4,6 +4,7 @@ import {useSelector} from "react-redux";
 import {fetchOneBurger} from "../redux/burger/asyncActions";
 import {selectBurger, selectBurgersData} from "../redux/burger/selectors";
 import {useAppDispatch} from "../redux/hooks";
+import { PreLoader } from '../components';
 
 const FullBurger: React.FC = () => {
     const { id } = useParams();
@@ -25,11 +26,7 @@ const FullBurger: React.FC = () => {
     const oneBurger = useSelector(selectBurger);
 
     if(oneBurger === null) {
-        return (
-            <div className='container' style={{ textAlign: "center" }}>
-                <h4 style={{ fontSize: 30, marginTop: 20 }}>...Loading</h4>
-            </div>
-        )
+        return <PreLoader/>
     }
 
     return (
