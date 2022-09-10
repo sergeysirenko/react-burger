@@ -2,11 +2,10 @@ import React from 'react';
 import {useNavigate} from 'react-router-dom';
 import qs from "qs";
 
-import Categories from "../components/Categories";
-import Sort, {sortList} from "../components/Sort";
-import Skeleton from "../components/BurgerBlock/Skeleton";
-import BurgerBlock from "../components/BurgerBlock";
-import Pagination from "../components/Pagination"
+import {sortList} from "../components/Sort";
+
+import {Sort, Categories, BurgerBlock, Skeleton, Pagination} from "../components";
+
 import {BurgerItemType} from "../redux/burger/types";
 import {fetchBurgers} from "../redux/burger/asyncActions";
 import {selectBurgersData} from "../redux/burger/selectors";
