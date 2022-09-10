@@ -153,20 +153,34 @@ body {
 
   &__item {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
     width: 100%;
     border-top: 1px solid $gray-line;
     padding-top: 30px;
     margin-top: 30px;
 
+    @media (min-width: 576px) {
+      flex-direction: row;
+      gap: 0;
+    }
+
     &-img {
       display: flex;
       align-items: center;
-      margin-right: 15px;
-      width: 10%;
+      
+      @media (min-width: 576px) {
+        width: 15%;
+        margin-right: 15px;
+      }
 
       img {
-        width: 80px;
-        height: 80px;
+        width: 170px;
+
+        @media (min-width: 576px) {
+            width: 80px;
+        }
       }
     }
 
@@ -174,7 +188,11 @@ body {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      width: 40%;
+      align-items: center;
+
+      @media (min-width: 576px) {
+        width: 35%;
+      }
 
       h3 {
         font-weight: bold;
@@ -193,7 +211,10 @@ body {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: 13%;
+
+      @media (min-width: 576px) {
+        width: 13%;
+      }
 
       &-minus {
         svg {
@@ -216,6 +237,7 @@ body {
 
       b {
         font-size: 22px;
+        margin: 0 5px;
       }
     }
 
@@ -223,7 +245,10 @@ body {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 33%;
+      
+      @media (min-width: 576px) {
+        width: 33%;
+      }
 
       b {
         font-weight: bold;
@@ -236,7 +261,10 @@ body {
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      width: 4%;
+      
+      @media (min-width: 576px) {
+        width: 4%;
+      }
 
       .button {
         border-color: darken($color: $gray-line, $amount: 10);
@@ -270,7 +298,13 @@ body {
 
     &-details {
       display: flex;
+      flex-direction: column;
+      align-items: center;
       justify-content: space-between;
+
+      @media (min-width: 576px) {
+        flex-direction: row;
+      }
 
       span {
         font-size: 22px;
@@ -287,6 +321,7 @@ body {
       display: flex;
       justify-content: space-between;
       margin-top: 40px;
+      gap: 5px;
 
       .go-back-btn {
         display: flex;
