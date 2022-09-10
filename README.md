@@ -1,8 +1,6 @@
 # React Burger Shop
 
-[You can see the app on Heroku](https://criptonomicon.herokuapp.com/)
-
-https://ukrainianburgers.herokuapp.com/
+[You can see the app on Heroku](https://ukrainianburgers.herokuapp.com/)
 
 ## Getting Started with Create React App
 
