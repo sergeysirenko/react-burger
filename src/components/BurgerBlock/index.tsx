@@ -1,7 +1,9 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {addItem, CartItemType, selectCartItems} from "../../redux/slices/cartSlice";
-import {BurgerItemType} from "../../redux/slices/burgerSlice";
+import {addItem} from "../../redux/cart/slice";
+import {CartItemType} from "../../redux/cart/types";
+import {selectCartItems} from "../../redux/cart/selectors";
+import {BurgerItemType} from "../../redux/burger/types";
 import {Link} from "react-router-dom";
 
 const BurgerBlock: React.FC<BurgerItemType> = ({id, title, price, imageUrl, steak, types}) => {

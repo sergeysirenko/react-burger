@@ -1,7 +1,8 @@
 import React from 'react';
 import {useParams, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
-import {fetchOneBurger, selectBurger, selectBurgersData} from "../redux/slices/burgerSlice";
+import {fetchOneBurger} from "../redux/burger/asyncActions";
+import {selectBurger, selectBurgersData} from "../redux/burger/selectors";
 import {useAppDispatch} from "../redux/hooks";
 
 const FullBurger: React.FC = () => {

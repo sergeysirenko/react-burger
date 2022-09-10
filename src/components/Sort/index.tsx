@@ -1,7 +1,8 @@
 import React from 'react';
 import classes from './Sort.module.scss';
-import {selectFilter, setSort, SortPropertyEnum, SortType} from "../../redux/slices/filterSlice";
-import {useDispatch, useSelector} from "react-redux";
+import {SortPropertyEnum, SortType} from "../../redux/filter/types";
+import {setSort} from "../../redux/filter/slice";
+import {useDispatch} from "react-redux";
 import useClickOutside from "../../hooks/useClickOutside";
 
 export const sortList: SortType[] = [

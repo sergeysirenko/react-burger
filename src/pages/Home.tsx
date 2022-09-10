@@ -7,10 +7,13 @@ import Sort, {sortList} from "../components/Sort";
 import Skeleton from "../components/BurgerBlock/Skeleton";
 import BurgerBlock from "../components/BurgerBlock";
 import Pagination from "../components/Pagination"
-import {BurgerItemType, fetchBurgers, selectBurgersData} from "../redux/slices/burgerSlice";
+import {BurgerItemType} from "../redux/burger/types";
+import {fetchBurgers} from "../redux/burger/asyncActions";
+import {selectBurgersData} from "../redux/burger/selectors";
 
 import {useSelector} from 'react-redux';
-import {selectFilter, selectFilterSearch, setCategoryId, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
+import {selectFilter, selectFilterSearch} from "../redux/filter/selectors";
+import {setCategoryId, setCurrentPage, setFilters} from "../redux/filter/slice";
 import useDebounce from "../hooks/useDebounce";
 import {useAppDispatch} from "../redux/hooks";
 
